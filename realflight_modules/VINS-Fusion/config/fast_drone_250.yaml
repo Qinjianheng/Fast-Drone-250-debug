@@ -13,7 +13,7 @@ image1_topic: "/camera/infra2/image_rect_raw"
 
 
 
-output_path: "/home/fast-drone/vins_output"
+output_path: "/home/music-drone03/vins_output"
 
 
 cam0_calib: "left.yaml"
@@ -30,22 +30,22 @@ body_T_cam0: !!opencv-matrix
    rows: 4
    cols: 4
    dt: d
-   data: [ -3.0597105734350372e-02, -5.8927835241672222e-03,
-       9.9951442822153314e-01, 4.7302157421591003e-02,
-       -9.9953144626651957e-01, -6.5966180705800959e-04,
-       -3.0601515822914926e-02, 2.2936545354189812e-02,
-       8.3966960215681175e-04, -9.9998241981978753e-01,
-       -5.8698386963871307e-03, 6.1639590858913150e-02, 0., 0., 0., 1. ]
+   data: [ 6.5958902001999054e-03, -5.7606402600332562e-03,
+       9.9996165389291902e-01, 5.6746276074542565e-02,
+       -9.9997455958455328e-01, -2.7535988736953065e-03,
+       6.5801122271694767e-03, 1.0239887025527581e-02,
+       2.7155876244864818e-03, -9.9997961615076825e-01,
+       -5.7786561427781713e-03, 7.5753625513756168e-02, 0., 0., 0., 1. ]
 body_T_cam1: !!opencv-matrix
    rows: 4
    cols: 4
    dt: d
-   data: [ -3.0069515759978405e-02, -5.7183785193312686e-03,
-       9.9953145241611574e-01, 4.4848038940723180e-02,
-       -9.9954744323873768e-01, -6.8446400583832556e-04,
-       -3.0073912680706305e-02, -2.7107742793766636e-02,
-       8.5611731814771996e-04, -9.9998341569054738e-01,
-       -5.6952091272581828e-03, 6.1794907739113121e-02, 0., 0., 0., 1. ]
+   data: [ 5.4343443021860338e-03, -5.6487187235336189e-03,
+       9.9996927946751835e-01, 5.4227791046037963e-02,
+       -9.9998133977288917e-01, -2.8213943741641767e-03,
+       5.4184720912073270e-03, -3.8320941971254949e-02,
+       2.7907002746720422e-03, -9.9998006565659492e-01,
+       -5.6639457456009179e-03, 7.5683200884726992e-02, 0., 0., 0., 1. ]
 #Multiple thread support
 multiple_thread: 1
 
@@ -75,6 +75,6 @@ td: -0.05                             # initial value of time offset. unit: s. r
 
 #loop closure parameters
 load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
-pose_graph_save_path: "/home/fast/savedfiles/output/pose_graph/" # save and load path
+pose_graph_save_path: "/home/music-drone03/savedfiles/output/pose_graph/" # save and load path
 save_image: 1                   # save image in pose graph for visualization prupose; you can close this function by setting 0 
 

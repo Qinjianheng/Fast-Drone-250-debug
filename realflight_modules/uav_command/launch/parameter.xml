@@ -1,0 +1,74 @@
+<launch>
+  <arg name="origin_x"/>
+  <arg name="origin_y"/>
+<!--arg name="x_distance_cylinder3_chunnel"/-->
+
+		
+  <arg name="right"/>
+		<arg name="left"/>
+  <arg name="chunnel_x"/>
+  <arg name="chunnel_y"/> 
+  <arg name="chunnel_z"/> 
+  <arg name="cylinder_x_before"/>
+  <arg name="cylinder_y_before"/>
+  <arg name="cylinder_z_before"/>
+  <arg name="cylinder_z_0" />
+  <arg name="maze_x_before"/>
+  <arg name="maze_y_before"/>
+  <arg name="maze_z_before"/>
+  <arg name="maze_x_0"/>
+  <arg name="maze_y_0"/>
+  <arg name="maze_z_0"/>
+  <arg name="maze_x_1"/>
+  <arg name="maze_y_1" />
+  <arg name="maze_z_1"/>
+	<arg name="maze_x_2"/>
+  <arg name="maze_y_2"/>
+  <arg name="maze_z_2"/>
+  <arg name="maze_x_behind"/>
+  <arg name="maze_y_behind"/>
+  <arg name="maze_z_behind"/>
+  <arg name="land_x"/>
+  <arg name="land_y"/>
+  <arg name="land_z"/>
+  <param name="use_sim_time" value="false"/>
+
+
+	<node pkg="uav_command" type="uav_command" name="uav_command" output="screen">
+
+      <param name="task/origin_x" value="$(arg origin_x)" type="double"/>
+			<param name="task/origin_y" value="$(arg origin_y)" type="double"/>
+      <!--修改坐标朝向-->
+      <!--param name="task/x_distance_cylinder3_chunnel" value="$(arg x_distance_cylinder3_chunnel)" type="double"/-->
+      <param name="task/chunnel_x" value="$(arg chunnel_x)" type="double"/>
+			<param name="task/chunnel_y" value="$(arg chunnel_y)" type="double"/>
+      <param name="task/chunnel_z" value="$(arg chunnel_z)" type="double"/>
+      <param name="task/right"  value="$(arg right)" type="double"/>
+		  <param name="task/left"  value="$(arg left)" type="double"/>
+      <!-- <param name="task/chunnel_x_before" value="$(arg chunnel_x_before)" type="double"/>
+      <param name="task/chunnel_y_before" value="$(arg chunnel_y_before)" type="double"/>
+      <param name="task/chunnel_z_before" value="$(arg chunnel_z_before)" type="double"/> -->
+     
+      <param name="task/cylinder_x_before" value="$(arg cylinder_x_before)" type="double"/>
+      <param name="task/cylinder_y_before" value="$(arg cylinder_y_before)" type="double"/>
+      <param name="task/cylinder_z_before" value="$(arg cylinder_z_before)" type="double"/>
+      <param name="task/cylinder_z_0" value="$(arg cylinder_z_0)" type="double"/>
+       <param name="task/maze_x_before" value="$(arg maze_x_before)" type="double"/>
+			<param name="task/maze_y_before" value="$(arg maze_y_before)" type="double"/>
+      <param name="task/maze_z_before" value="$(arg maze_z_before)" type="double"/>
+      <param name="task/maze_x_0" value="$(arg maze_x_0)" type="double"/>
+			<param name="task/maze_y_0" value="$(arg maze_y_0)" type="double"/>
+      <param name="task/maze_z_0" value="$(arg maze_z_0)" type="double"/>
+      <param name="task/maze_x_1" value="$(arg maze_x_1)" type="double"/>
+			<param name="task/maze_y_1" value="$(arg maze_y_1)" type="double"/>
+      <param name="task/maze_z_1" value="$(arg maze_z_1)" type="double"/>
+      <param name="task/maze_x_2" value="$(arg maze_x_2)" type="double"/>
+			<param name="task/maze_y_2" value="$(arg maze_y_2)" type="double"/>
+      <param name="task/maze_z_2" value="$(arg maze_z_2)" type="double"/>
+			<param name="task/land_x" value="$(arg land_x)" type="double"/>
+			<param name="task/land_y" value="$(arg land_y)" type="double"/>
+      <param name="task/land_z" value="$(arg land_z)" type="double"/>
+      <param name="task/maze_x_behind" value="$(arg maze_x_behind)" type="double"/>
+			<param name="task/maze_y_behind" value="$(arg maze_y_behind)" type="double"/>
+	</node>
+</launch>
