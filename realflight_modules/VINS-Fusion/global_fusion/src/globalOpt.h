@@ -11,10 +11,12 @@
 
 #pragma once
 #include <vector>
+#include <list>
 #include <map>
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <atomic>
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
 #include <ceres/ceres.h>
@@ -33,19 +35,17 @@ public:
 	void inputGPS(double t, double latitude, double longitude, double altitude, double posAccuracy);
 	void inputOdom(double t, Eigen::Vector3d OdomP, Eigen::Quaterniond OdomQ);
 	void getGlobalOdom(Eigen::Vector3d &odomP, Eigen::Quaterniond &odomQ);
-	nav_msgs::Path global_path;
 
 private:
 	void GPS2XYZ(double latitude, double longitude, double altitude, double* xyz);
 	void optimize();
-	void updateGlobalPath();
 
 	// format t, tx,ty,tz,qw,qx,qy,qz
-	map<double, vector<double>> localPoseMap;
-	map<double, vector<double>> globalPoseMap;
-	map<double, vector<double>> GPSPositionMap;
+	vector<pair<double, vector<double>>> localPoseMap;
+	vector<pair<double, vector<double>>> globalPoseMap;
+	vector<pair<double, vector<double>>> GPSPositionMap;
 	bool initGPS;
-	bool newGPS;
+	atomic<bool> newGPS;
 	GeographicLib::LocalCartesian geoConverter;
 	std::mutex mPoseMap;
 	Eigen::Matrix4d WGPS_T_WVIO;
@@ -54,3 +54,25 @@ private:
 	std::thread threadOpt;
 
 };
+
+template<class IterType, class ValType, class GetValFunc>
+IterType b_search(IterType begin, IterType end, ValType val, GetValFunc&& get_val)
+{
+    const IterType none = end;
+
+    while(end - begin > 1){
+        IterType mid = begin + (end - begin) / 2;
+        const ValType mid_val = get_val(mid);
+        if(mid_val == val)
+            return mid;
+        else if(val < mid_val)
+            end = mid;
+        else
+            begin = mid;
+    }
+
+    if(get_val(begin) == val)
+        return begin;
+    else
+        return none;
+}

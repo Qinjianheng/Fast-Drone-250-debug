@@ -51,7 +51,7 @@ class CommandBase:
                 return self.odom
             rate.sleep()
 
-    def wait_for_target(self, id, x, y, z, yaw, xy_thr, z_thr, yaw_thr, v_thr):
+    def wait_for_target(self, id, x, y, z, yaw, xy_thr, z_thr, yaw_thr):
         cnt = 0
         while not rospy.is_shutdown():
             cur_odom = self.get_current_odom()
@@ -60,23 +60,20 @@ class CommandBase:
             cur_orientation = cur_odom.pose.pose.orientation
             cur_quat = (cur_orientation.x, cur_orientation.y, cur_orientation.z, cur_orientation.w)
             cur_yaw = euler_from_quaternion(cur_quat)[2]
-            cur_v = cur_odom.twist.twist.linear
 
             xy_diff = sqrt((x - cur_position.x)**2 + (y - cur_position.y)**2)
             z_diff = fabs(z - cur_position.z)
             yaw_diff = fabs(self.wrap_pi(yaw - cur_yaw))
-            v_diff = sqrt(cur_v.x**2 + cur_v.y**2 + cur_v.z**2)
-            rospy.loginfo("%s errors xy: %.2f z: %.2f yaw: %.2f v: %.2f", id, xy_diff, z_diff, yaw_diff, v_diff)
+            rospy.loginfo("%s errors xy: %.2f z: %.2f yaw: %.2f", id, xy_diff, z_diff, yaw_diff)
             if (xy_thr is None or xy_diff < xy_thr) and \
-                (z_thr is None or z_diff < z_thr) and \
-                (yaw_thr is None or yaw_diff < yaw_thr) and \
-                (v_thr is None or v_diff < v_thr):
+               (z_thr is None or z_diff < z_thr) and \
+               (yaw_thr is None or yaw_diff < yaw_thr):
                 cnt = cnt + 1
                 if cnt >= 50:
                     rospy.loginfo("goal" + str(id) +  "reached!")
                     return
 
-    def ego_move(self, id, x, y, z, yaw, xy_thr=xy_threshold, z_thr=z_threshold, yaw_thr=yaw_threshold, v_thr = speed_thr):
+    def ego_move(self, id, x, y, z, yaw, xy_thr=xy_threshold, z_thr=z_threshold, yaw_thr=yaw_threshold):
         ego_setpoint = PoseStamped()
         ego_setpoint.header.stamp = rospy.Time.now()
         ego_setpoint.pose.position.x = x
@@ -88,9 +85,9 @@ class CommandBase:
         ego_setpoint.pose.orientation.z = sin(yaw / 2.0)
         self.ego_pub.publish(ego_setpoint)
         rospy.loginfo("ego goal %s %.2f %.2f %.2f %.2f", id, x, y, z, yaw)
-        self.wait_for_target(id, x, y, z, yaw, xy_thr, z_thr, yaw_thr, v_thr)
+        self.wait_for_target(id, x, y, z, yaw, xy_thr, z_thr, yaw_thr)
 
-    def px4_move(self, id, x, y, z, yaw, xy_thr=xy_threshold, z_thr=z_threshold, yaw_thr=yaw_threshold, v_thr = speed_thr):
+    def px4_move(self, id, x, y, z, yaw, xy_thr=xy_threshold, z_thr=z_threshold, yaw_thr=yaw_threshold):
         px4_setpoint = PositionCommand()
         px4_setpoint.header.stamp = rospy.Time.now()
         px4_setpoint.position.x = x
@@ -99,16 +96,16 @@ class CommandBase:
         px4_setpoint.yaw = yaw
         self.px4_pub.publish(px4_setpoint)
         rospy.loginfo("px4 goal %s %.2f %.2f %.2f %.2f", id, x, y, z, yaw)
-        self.wait_for_target(id, x, y, z, yaw, xy_thr, z_thr, yaw_thr, v_thr)
+        self.wait_for_target(id, x, y, z, yaw, xy_thr, z_thr, yaw_thr)
 
     def move(self, id, x, y, z, yaw):
-        cur_odom = self.get_current_odom()
-        cur_orientation = cur_odom.pose.pose.orientation
-        cur_quat = (cur_orientation.x, cur_orientation.y, cur_orientation.z, cur_orientation.w)
-        cur_yaw = euler_from_quaternion(cur_quat)[2]
-        self.ego_move(id, x, y, z, cur_yaw, xy_thr=1, z_thr=0.5, yaw_thr=0.5)
-        self.px4_move(id, x, y, z, yaw)
-        
+        #cur_odom = self.get_current_odom()
+        #cur_orientation = cur_odom.pose.pose.orientation
+        #cur_quat = (cur_orientation.x, cur_orientation.y, cur_orientation.z, cur_orientation.w)
+        #cur_yaw = euler_from_quaternion(cur_quat)[2]
+        #self.ego_move(id, x, y, z, cur_yaw, xy_thr=1, z_thr=0.5, yaw_thr=0.5)
+        #self.px4_move(id, x, y, z, yaw)
+        self.ego_move(id, x, y, z, yaw)
 
 
 

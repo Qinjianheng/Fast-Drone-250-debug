@@ -1,0 +1,6 @@
+<launch>
+	<include file="$(find mavros)/launch/px4.launch" />
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch" />
+    <include file="$(find vision_server)/launch/vision_server.launch" />
+    <node pkg="bringup" type="set_imu200.sh" name="set_imu200" output="screen"/>
+</launch> 

@@ -42,7 +42,7 @@ void GlobalOptimization::inputOdom(double t, Eigen::Vector3d OdomP, Eigen::Quate
 	mPoseMap.lock();
     vector<double> localPose{OdomP.x(), OdomP.y(), OdomP.z(), 
     					     OdomQ.w(), OdomQ.x(), OdomQ.y(), OdomQ.z()};
-    localPoseMap[t] = localPose;
+    localPoseMap.push_back(make_pair(t, localPose));
 
 
     Eigen::Quaterniond globalQ;
@@ -50,22 +50,14 @@ void GlobalOptimization::inputOdom(double t, Eigen::Vector3d OdomP, Eigen::Quate
     Eigen::Vector3d globalP = WGPS_T_WVIO.block<3, 3>(0, 0) * OdomP + WGPS_T_WVIO.block<3, 1>(0, 3);
     vector<double> globalPose{globalP.x(), globalP.y(), globalP.z(),
                               globalQ.w(), globalQ.x(), globalQ.y(), globalQ.z()};
-    globalPoseMap[t] = globalPose;
+    globalPoseMap.push_back(make_pair(t, globalPose));
     lastP = globalP;
     lastQ = globalQ;
 
-    geometry_msgs::PoseStamped pose_stamped;
-    pose_stamped.header.stamp = ros::Time(t);
-    pose_stamped.header.frame_id = "world";
-    pose_stamped.pose.position.x = lastP.x();
-    pose_stamped.pose.position.y = lastP.y();
-    pose_stamped.pose.position.z = lastP.z();
-    pose_stamped.pose.orientation.x = lastQ.x();
-    pose_stamped.pose.orientation.y = lastQ.y();
-    pose_stamped.pose.orientation.z = lastQ.z();
-    pose_stamped.pose.orientation.w = lastQ.w();
-    global_path.header = pose_stamped.header;
-    global_path.poses.push_back(pose_stamped);
+    while(localPoseMap.size() > 100 && localPoseMap.back().first - localPoseMap.front().first > 3){
+        localPoseMap.erase(localPoseMap.begin());
+        globalPoseMap.erase(globalPoseMap.begin());
+    }
 
     mPoseMap.unlock();
 }
@@ -82,9 +74,12 @@ void GlobalOptimization::inputGPS(double t, double latitude, double longitude, d
 	GPS2XYZ(latitude, longitude, altitude, xyz);
 	vector<double> tmp{xyz[0], xyz[1], xyz[2], posAccuracy};
     //printf("new gps: t: %f x: %f y: %f z:%f \n", t, tmp[0], tmp[1], tmp[2]);
-	GPSPositionMap[t] = tmp;
-    newGPS = true;
+	GPSPositionMap.push_back(make_pair(t, tmp));
 
+    while(GPSPositionMap.back().first - GPSPositionMap.front().first > 3)
+        GPSPositionMap.erase(GPSPositionMap.begin());
+
+    newGPS = true;
 }
 
 void GlobalOptimization::optimize()
@@ -114,8 +109,7 @@ void GlobalOptimization::optimize()
             // w^t_i   w^q_i
             double t_array[length][3];
             double q_array[length][4];
-            map<double, vector<double>>::iterator iter;
-            iter = globalPoseMap.begin();
+            auto iter = globalPoseMap.begin();
             for (int i = 0; i < length; i++, iter++)
             {
                 t_array[i][0] = iter->second[0];
@@ -129,12 +123,11 @@ void GlobalOptimization::optimize()
                 problem.AddParameterBlock(t_array[i], 3);
             }
 
-            map<double, vector<double>>::iterator iterVIO, iterVIONext, iterGPS;
             int i = 0;
-            for (iterVIO = localPoseMap.begin(); iterVIO != localPoseMap.end(); iterVIO++, i++)
+            for (auto iterVIO = localPoseMap.begin(); iterVIO != localPoseMap.end(); iterVIO++, i++)
             {
                 //vio factor
-                iterVIONext = iterVIO;
+                auto iterVIONext = iterVIO;
                 iterVIONext++;
                 if(iterVIONext != localPoseMap.end())
                 {
@@ -186,7 +179,7 @@ void GlobalOptimization::optimize()
                 }
                 //gps factor
                 double t = iterVIO->first;
-                iterGPS = GPSPositionMap.find(t);
+                auto iterGPS = b_search(GPSPositionMap.begin(), GPSPositionMap.end(), t, [](const vector<pair<double, vector<double>>>::iterator& iter){ return iter->first; });
                 if (iterGPS != GPSPositionMap.end())
                 {
                     ceres::CostFunction* gps_function = TError::Create(iterGPS->second[0], iterGPS->second[1], 
@@ -211,12 +204,10 @@ void GlobalOptimization::optimize()
                 }
 
             }
-            //mPoseMap.unlock();
             ceres::Solve(options, &problem, &summary);
             //std::cout << summary.BriefReport() << "\n";
 
             // update global pose
-            //mPoseMap.lock();
             iter = globalPoseMap.begin();
             for (int i = 0; i < length; i++, iter++)
             {
@@ -227,43 +218,20 @@ void GlobalOptimization::optimize()
             	{
             	    Eigen::Matrix4d WVIO_T_body = Eigen::Matrix4d::Identity(); 
             	    Eigen::Matrix4d WGPS_T_body = Eigen::Matrix4d::Identity();
-            	    double t = iter->first;
-            	    WVIO_T_body.block<3, 3>(0, 0) = Eigen::Quaterniond(localPoseMap[t][3], localPoseMap[t][4], 
-            	                                                       localPoseMap[t][5], localPoseMap[t][6]).toRotationMatrix();
-            	    WVIO_T_body.block<3, 1>(0, 3) = Eigen::Vector3d(localPoseMap[t][0], localPoseMap[t][1], localPoseMap[t][2]);
+            	    WVIO_T_body.block<3, 3>(0, 0) = Eigen::Quaterniond(localPoseMap.back().second[3], localPoseMap.back().second[4], 
+            	                                                       localPoseMap.back().second[5], localPoseMap.back().second[6]).toRotationMatrix();
+            	    WVIO_T_body.block<3, 1>(0, 3) = Eigen::Vector3d(localPoseMap.back().second[0], localPoseMap.back().second[1], localPoseMap.back().second[2]);
             	    WGPS_T_body.block<3, 3>(0, 0) = Eigen::Quaterniond(globalPose[3], globalPose[4], 
             	                                                        globalPose[5], globalPose[6]).toRotationMatrix();
             	    WGPS_T_body.block<3, 1>(0, 3) = Eigen::Vector3d(globalPose[0], globalPose[1], globalPose[2]);
             	    WGPS_T_WVIO = WGPS_T_body * WVIO_T_body.inverse();
             	}
             }
-            updateGlobalPath();
-            //printf("global time %f \n", globalOptimizationTime.toc());
+            printf("global time %f \n", globalOptimizationTime.toc());
             mPoseMap.unlock();
         }
         std::chrono::milliseconds dura(2000);
         std::this_thread::sleep_for(dura);
     }
 	return;
-}
-
-
-void GlobalOptimization::updateGlobalPath()
-{
-    global_path.poses.clear();
-    map<double, vector<double>>::iterator iter;
-    for (iter = globalPoseMap.begin(); iter != globalPoseMap.end(); iter++)
-    {
-        geometry_msgs::PoseStamped pose_stamped;
-        pose_stamped.header.stamp = ros::Time(iter->first);
-        pose_stamped.header.frame_id = "world";
-        pose_stamped.pose.position.x = iter->second[0];
-        pose_stamped.pose.position.y = iter->second[1];
-        pose_stamped.pose.position.z = iter->second[2];
-        pose_stamped.pose.orientation.w = iter->second[3];
-        pose_stamped.pose.orientation.x = iter->second[4];
-        pose_stamped.pose.orientation.y = iter->second[5];
-        pose_stamped.pose.orientation.z = iter->second[6];
-        global_path.poses.push_back(pose_stamped);
-    }
 }

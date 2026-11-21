@@ -13,8 +13,11 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   quadrotor_msgs
   tf
+  tf2
   vision_server
   mavros_msgs
+  tf2_ros
+  tf2_geometry_msgs
   #object_all
 )
 

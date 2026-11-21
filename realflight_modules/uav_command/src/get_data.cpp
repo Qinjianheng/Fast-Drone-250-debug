@@ -72,6 +72,34 @@ namespace UAV_plan
             detection = 1;
         }
     }
+// //坐标变换
+//     void cam2world_data::waitfor_cam2world()
+//     {
+//         while (loop)
+//         {
+
+//             loop = 0;
+
+//             try
+//             {
+//                 listener.waitForTransform("world", "camera", ros::Time(0), duration); // 20 hz
+//                 listener.lookupTransform("world", "camera", ros::Time(0), transform_cam2world);
+//             }
+//             catch (tf::TransformException &ex)
+//             {
+//                 ROS_ERROR("%s", ex.what());
+//                 ROS_ERROR("tag has not been deteted !!! ");
+//                 // ros::Duration(0.5).sleep();
+//                 continue;
+//             }
+
+//             cam2world.pose.position.x = srv_circle_info.response.pos_x;
+//             cam2world.pose.position.y = srv_circle_info.response.pos_x;
+//             cam2world.pose.position.z = srv_circle_info.response.pos_x;
+
+//         }
+//     }
+
  ego2px4_data::ego2px4_data(){
         receive_ego_cal=false;
     }

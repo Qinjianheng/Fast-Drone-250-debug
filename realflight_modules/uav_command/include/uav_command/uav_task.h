@@ -1,7 +1,8 @@
 #include <uav_command/get_data.h>
 
 #include <vision_server/circle.h>
-#include <vision_server/cylinder.h>
+// #include <vision_server/cylinder.h>
+#include <vision_server/switch_mode.h>
 #include <math.h>
 #include<vector>
 
@@ -10,41 +11,46 @@ namespace UAV_plan
     class uav_command
     {
     private:
+
         // prameters
         double origin_x_;
         double origin_y_;
-
-        double cylinder0_x_;
-        double cylinder0_y_;
+        //double cylinder0_[2];//x,y
+        double point1[2];
+        double point2[2];
+        double point3[2];
+        double point4[2];
+        // double cylinder1_[2];//x,y
+        // double cylinder2_[2];//x,y
+        // double cylinder3_[2];//x,y
         double left;
         double right;
+        double behind;//圆柱后多少米
         // double y_distance_cylinder3_chunnel_;
         //double x_distance_cylinder3_chunnel_;
         //double chunnel_x_before_;
         //double chunnel_y_before_;
         //double chunnel_z_before_;
-        double chunnel_x_;
-        double chunnel_y_;
-        double chunnel_z_;
-        double cylinder_x_before_;
-        double cylinder_y_before_;
-        double cylinder_z_before_;
+        //double x_distance_maze2_circle_static;
+        double chunnel_before_[4];//x,y,z,yaw
+        double chunnel_start_[4];
+        double chunnel_m_[4];
+        double chunnel_end_[4];
+        double cylinder_before_[4];
         double cylinder_z_0_;
-        double maze_x_before_;
-        double maze_y_before_;
-        double maze_z_before_;
-        double maze_x_0_;
-        double maze_y_0_;
-        double maze_z_0_;
-        double maze_x_1_;
-        double maze_y_1_;
-        double maze_z_1_;
-        double maze_x_2_;
-        double maze_y_2_;
-        double maze_z_2_;
-        double maze_x_behind_;
-        double maze_y_behind_;
-        double maze_z_behind_;
+        double circle_before_[4];
+        double cylinder2point0[8];
+        double cylinder2point1[8];
+        double cylinder2point2[8];
+        double cylinder2point3[8];
+        double maze_before_[4];
+        double maze_0_[4];
+        double maze_1_[4];
+        double maze_2_[4];
+        double maze_3_[4];
+        double maze_4_[4];
+        double maze_behind_[4];
+        double circle_next_[4];
         double circle_static0_x;
         double circle_static0_y;
         double circle_static0_z;
@@ -59,9 +65,9 @@ namespace UAV_plan
         double circle_move0_direction_y;
         double circle_move0_direction_z;
 
-        double land_x_;
-        double land_y_;
-        double land_z_;
+        double land_[4];
+        bool is_vision_server_call;
+        int wader_point_index;
         // task_flag
         //  1 -- takeoff
         //  2 -- pass through cylinder0
@@ -77,11 +83,15 @@ namespace UAV_plan
     public:
         uav_command();
         ~uav_command();
-        //wader中的点
         std::vector<double> x_tmp_vec=std::vector<double>(8);
         std::vector<double> y_tmp_vec= std::vector<double>(8);
         std::vector<double>yaw_tmp_vec = std::vector<double>(8);
         int  index_in_vector;
+        //wader中的点
+        // std::vector<double> x_tmp_vec=std::vector<double>(8);
+        // std::vector<double> y_tmp_vec= std::vector<double>(8);
+        // std::vector<double>yaw_tmp_vec = std::vector<double>(8);
+        // int  index_in_vector;
         void init(ros::NodeHandle &nh);
         enum task_flags
         {
@@ -89,18 +99,27 @@ namespace UAV_plan
             cylinder_before=2,
             cylinder0 = 3,
             wader = 4,
-            chunnel_start = 5,
-            chunnel_end = 6,
-            maze_before=7,
+            chunnel_before=5,
+            chunnel_start = 6,
+            chunnel_end = 7,
             maze_0 = 8,
             maze_1=9,
             maze_2=10,
             maze_3=11,
             maze_4=12,
             maze_behind=13,
-            circle_static_0 = 14,
-            circle_move_0 = 15,
-            land = 16
+            circle_before=14,
+            circle_static_0 = 15,
+            circle_move_0 = 16,
+            land = 17,
+            circle_next=18,
+            circle_static_center=20,
+            circle_static_add=21,
+            circle_move_center=22,
+            circle_move_add=23,
+            chunnel_m=24,
+            land_end = 19,
+            maze_before = 20
         };
         odom_data rc_odom;
         tag2world_data rc_tag2world;
@@ -108,8 +127,9 @@ namespace UAV_plan
         //  TYPE_WALL = 1  TYPE_CHANNEL = 2  TYPE_1.5M_CIRCLE = 3  TYPE_1M_CIRCLE = 4
         ros::ServiceClient object_client;
         // 新增客户端
-        ros::ServiceClient vision_cylinder_client;
+        //ros::ServiceClient vision_cylinder_client;
         ros::ServiceClient vision_circle_client;
+        ros::ServiceClient vision_switch_mode_client;
         //话题发布
         ros::Publisher TakeoffLand_pub;
         ros::Publisher ego_pub;
@@ -118,14 +138,18 @@ namespace UAV_plan
         int last_task_flag;
         bool land_flag;
         bool landing;
+        int land_delay;
         bool debug;
         // 根据视觉的信息知道是否到达能看到完整障碍物的位置
         bool ready;
         // 是否接收到视觉的服务响应
         bool receive_srvinfo;
+        bool switch_modeinfo;
         // 视觉检测到的障碍物信息
-        vision_server::cylinder srv_cylinder_info;
+        //vision_server::cylinder srv_cylinder_info;
         vision_server::circle srv_circle_info;
+        // 视觉检测转换模式 --1：圆柱 2：圆环
+        vision_server::switch_mode srv_switch_mode_info;
         //发布的消息，ego到点，px4转向，自动降落指令
         geometry_msgs::PoseStamped ego_setpoint;
         quadrotor_msgs::PositionCommand px4_setpoint;
@@ -141,7 +165,7 @@ namespace UAV_plan
         double distance2;
         double angle;
         double theta;
-        
+        int cylinder_index;////////
         // target
         double x;
         double y;

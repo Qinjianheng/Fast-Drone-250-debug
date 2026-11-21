@@ -1,0 +1,3 @@
+<launch>
+    <include file="$(find vins)/launch/fast_drone_250_purertk.launch" />
+</launch> 

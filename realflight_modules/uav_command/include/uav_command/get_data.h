@@ -38,9 +38,28 @@ namespace UAV_plan
         tf::TransformListener listener;
         // get tf , tag bundle detections pose relative to world
         tf::StampedTransform transform_tag2world;
+
         geometry_msgs::PoseStamped tag2world;
 
         void waitfor_tag2world();
+    };
+
+    class cam2world_data
+    {
+        public:
+        cam2world_data();
+        ~cam2world_data();
+
+        bool loop = 1;
+        ros::Duration duration = ros::Duration(0.05);
+        
+        tf::TransformListener listener;
+        // get tftransform from /camera to /world
+        tf::StampedTransform transform_cam2world;
+
+        geometry_msgs::PoseStamped cam2world;
+
+        void waitfor_cam2world();
     };
     
     class ego2px4_data
