@@ -1,0 +1,105 @@
+<launch>
+
+	<include file="$(find uav_command)/launch/parameter.xml">
+
+		<arg name="origin_x" value="0.0" />
+		<arg name="origin_y" value="0.0" />
+		<!--cylinder0
+		pos x=-7.00 y=9.3-->
+		<arg name="right" value="1.2" />
+		<arg name="left" value="1.2" />
+		<arg name="behind" value="0.5" />
+
+		<arg name="cylinder_x_before" value="-3.39" />
+		<arg name="cylinder_y_before" value="2.97" />
+		<arg name="cylinder_z_before" value="1.20" />
+		<arg name="cylinder_yaw_before" value="0" />
+
+		<arg name="cylinder_z_0" value="1.20"/>
+
+		<arg name="point_x_1" value="-5.08"/>
+		<arg name="point_y_1" value="5.07"/>
+
+		<arg name="point_x_2" value="-1.72"/>
+		<arg name="point_y_2" value="6.66"/>
+
+		<arg name="point_x_3" value="-5.38"/>
+		<arg name="point_y_3" value="8.02"/>
+
+		<arg name="point_x_4" value="-1.488"/>
+		<arg name="point_y_4" value="10.41"/>
+		
+		<arg name="chunnel_x_before" value="-4.30" />
+		<arg name="chunnel_y_before" value="13.34" /> <!--13.34-->
+		<arg name="chunnel_z_before" value="1.55" /> 
+		<arg name="chunnel_yaw_before" value="0" /> 
+
+		<arg name="chunnel_x_start" value="-3.13" /> <!-- -3.17 -->
+		<arg name="chunnel_y_start" value="15.31" /> <!--15.36-->
+		<arg name="chunnel_z_start" value="1.55" /> 
+		<arg name="chunnel_yaw_start" value="-0.227" />
+
+		<arg name="chunnel_x_m" value="-2.41"/>
+		<arg name="chunnel_y_m" value="16.83"/>
+		<arg name="chunnel_z_m" value="1.55" /> 
+		<arg name="chunnel_yaw_m" value="-0.227" />  
+
+		<arg name="chunnel_x_end" value="-1.45" />
+		<arg name="chunnel_y_end" value="18.81" /> 
+		<arg name="chunnel_z_end" value="1.55" /> 
+		<arg name="chunnel_yaw_end" value="-0.393" /> 
+
+		<arg name="maze_x_before" value="1.15" /> 
+		<arg name="maze_y_before" value="25.78" /> 
+		<arg name="maze_z_before" value="1.2" />
+		<arg name="maze_yaw_before" value="-1.517" />
+		
+		<arg name="maze_x_0" value="5.56" /> <!--4.15-->
+		<arg name="maze_y_0" value="20.10" /> <!-- 25.78-->
+		<arg name="maze_z_0" value="1.2" />
+		<arg name="maze_yaw_0" value="-1.517" />
+
+		<arg name="maze_x_1" value="10.31" /> <!--6.56 --> 
+		<arg name="maze_y_1" value="19.80" /> <!-- 25.79-->
+		<arg name="maze_z_1" value="1.2" />
+		<arg name="maze_yaw_1" value="2.953" />
+
+		<arg name="maze_x_2" value="6.23" /> <!--23.64-->
+		<arg name="maze_y_2" value="23.06" /> <!-- -3.52-->
+		<arg name="maze_z_2" value="1.5" />
+		<arg name="maze_yaw_2" value="-1.525" />
+
+		<arg name="maze_x_3" value="8.56" /> <!--23.67-->
+		<arg name="maze_y_3" value="22.95" /> <!-- -5.63-->
+		<arg name="maze_z_3" value="1.50" />
+		<arg name="maze_yaw_3" value="0.177" />
+
+		<arg name="maze_x_4" value="8.85" /> <!--26.70-->
+		<arg name="maze_y_4" value="25.87" /> <!---5.60-->
+		<arg name="maze_z_4" value="1.2" />
+		<arg name="maze_yaw_4" value="-1.381" />
+
+		<arg name="maze_x_behind" value="18.02" /> <!--19.02-->
+		<arg name="maze_y_behind" value="23.80" /> <!--23.80-->
+		<arg name="maze_z_behind" value="1.6" />
+		<arg name="maze_yaw_behind" value="-1.763" />
+
+		<arg name="circle_x_before" value="18.66" /> <!--19.39-->
+		<arg name="circle_y_before" value="20.90" />
+		<arg name="circle_z_before" value="1.9" />
+		<arg name="circle_yaw_before" value="-2.703" />
+
+		<arg name="circle_x_next" value="18.91" /> 
+		<arg name="circle_y_next" value="14.85" />
+		<arg name="circle_z_next" value="1.9" />
+		<arg name="circle_yaw_next" value="-3.095" />
+		
+		<arg name="land_x" value="14.79" />
+		<arg name="land_y" value="0.38" />
+		<arg name="land_z" value="1.0" />
+		<arg name="land_yaw" value="-3.106" />
+	</include>
+	<!-- <include file="$(find apriltag_ros)/launch/competition_apriltag.launch"> -->
+	<!-- </include> -->
+
+</launch>

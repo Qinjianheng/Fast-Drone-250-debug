@@ -1,0 +1,3 @@
+<launch>
+	<node name="rtk_converter" pkg="rtk_converter" type="rtk_converter" output="screen"/>
+</launch> 
