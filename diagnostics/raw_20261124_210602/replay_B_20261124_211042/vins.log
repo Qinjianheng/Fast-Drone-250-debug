@@ -1,0 +1,47 @@
+[0m[ INFO] [1795525842.904715062]: init begins[0m
+config_file: /home/music-drone03/fast250_vins_diagnostics/raw_20261124_210602/replay_B_20261124_211042/fast_drone_250.yaml
+USE_IMU: 1
+IMU_TOPIC: /mavros/imu/data_raw
+result path /home/music-drone03/fast250_vins_diagnostics/raw_20261124_210602/replay_B_20261124_211042/output/stamped_traj_estimate.txt
+[33m[ WARN] [1795525842.911105338]:  fix extrinsic param [0m
+camera number 2
+[0m[ INFO] [1795525842.911562755]: Synchronized sensors, fix time offset: 0[0m
+[0m[ INFO] [1795525842.911573855]: ROW: 480 COL: 640 [0m
+ exitrinsic cam 0
+-0.000915927    0.0190833     0.999817
+   -0.999989   0.00456042  -0.00100313
+ -0.00457873    -0.999807    0.0190789
+ 0.0673569 -0.0568081  0.0941843
+ exitrinsic cam 1
+-0.000885804    0.0193957     0.999811
+    -0.99999   0.00429267 -0.000969237
+ -0.00431066    -0.999803    0.0193917
+0.0674953 -0.106051  0.093836
+set g     0     0 9.805
+[33m[ WARN] [1795525842.911828321]: waiting for image and imu...[0m
+terminate called without an active exception
+... logging to /home/music-drone03/.ros/log/ffe196f4-e807-11f1-9b62-01c73c00f5b2/roslaunch-musicdrone03-NUC11TNKi5-26163.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/music-drone03/fast250_vins_diagnostics/raw_20261124_210602/replay_B_20261124_211042/replay.launch
+[1mstarted roslaunch server http://musicdrone03-NUC11TNKi5:44169/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: noetic
+ * /rosversion: 1.16.0
+
+NODES
+  /
+    vins_fusion (vins/vins_node)
+
+[1mROS_MASTER_URI=http://localhost:11312[0m
+]2;/home/music-drone03/fast250_vins_diagnostics/raw_20261124_210602/replay_B_20261124_211042/replay.launch http://localhost:11312
+[1mprocess[vins_fusion-1]: started with pid [26182][0m
+[vins_fusion-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

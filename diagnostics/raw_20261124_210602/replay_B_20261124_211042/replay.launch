@@ -1,0 +1,7 @@
+<launch>
+	<node name="vins_fusion" pkg="vins"  type="vins_node" output="screen" args="/home/music-drone03/fast250_vins_diagnostics/raw_20261124_210602/replay_B_20261124_211042/fast_drone_250.yaml">
+	<!-- $(find vins)/../config/fast_drone_250.yaml -->
+		<remap from="~/imu_propagate" to="global_odom" />
+	</node>
+
+</launch> 

@@ -1,0 +1,23 @@
+path:         /home/music-drone03/fast250_vins_diagnostics/raw_20261124_210602/raw.bag
+version:      2.0
+duration:     1:10s (70s)
+start:        Nov 24 2026 21:06:03.92 (1795525563.92)
+end:          Nov 24 2026 21:07:13.00 (1795525634.00)
+size:         1.0 GB
+messages:     36877
+compression:  lz4 [1401/1401 chunks; 85.22%]
+uncompressed: 1.2 GB @ 17.7 MB/s
+compressed:   1.0 GB @ 15.1 MB/s (85.22%)
+types:        mavros_msgs/State          [65cd0a9fff993b062b91e354554ec7e9]
+              mavros_msgs/TimesyncStatus [021ec8044e747bea518b441f374ba64b]
+              sensor_msgs/CameraInfo     [c9a58c1b0b154e0e6da7578cb991d214]
+              sensor_msgs/Image          [060021388200f6f0f447d0fcd9c64743]
+              sensor_msgs/Imu            [6a62c6daae103f4ff57a132d6f95cec2]
+topics:       /camera/infra1/camera_info       2101 msgs    : sensor_msgs/CameraInfo    
+              /camera/infra1/image_rect_raw    2101 msgs    : sensor_msgs/Image         
+              /camera/infra2/camera_info       2101 msgs    : sensor_msgs/CameraInfo    
+              /camera/infra2/image_rect_raw    2101 msgs    : sensor_msgs/Image         
+              /mavros/imu/data                13851 msgs    : sensor_msgs/Imu           
+              /mavros/imu/data_raw            13850 msgs    : sensor_msgs/Imu           
+              /mavros/state                      71 msgs    : mavros_msgs/State         
+              /mavros/timesync_status           701 msgs    : mavros_msgs/TimesyncStatus

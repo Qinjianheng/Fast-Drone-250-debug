@@ -9,6 +9,8 @@
 
 #include "estimator.h"
 #include "../utility/visualization.h"
+#include <cmath>
+#include <iomanip>
 
 Estimator::Estimator(): f_manager{Rs}
 {
@@ -227,6 +229,15 @@ void Estimator::inputFeature(double t, const map<int, vector<pair<int, Eigen::Ma
 bool Estimator::getIMUInterval(double t0, double t1, vector<pair<double, Eigen::Vector3d>> &accVector, 
                                 vector<pair<double, Eigen::Vector3d>> &gyrVector)
 {
+    if (!std::isfinite(t0) || !std::isfinite(t1)
+        || t1 <= t0 || accBuf.size() != gyrBuf.size())
+    {
+        ROS_ERROR_STREAM("[VIO_INTERVAL] invalid interval: "
+                         << std::fixed << std::setprecision(9)
+                         << t0 << " -> " << t1);
+        return false;
+    }
+
     if(accBuf.empty())
     {
         printf("not receive imu\n");
@@ -261,6 +272,7 @@ bool Estimator::getIMUInterval(double t0, double t1, vector<pair<double, Eigen::
 
 bool Estimator::IMUAvailable(double t)
 {
+    std::lock_guard<std::mutex> lock(mBuf);
     if(!accBuf.empty() && t <= accBuf.back().first)
         return true;
     else
@@ -274,9 +286,19 @@ void Estimator::processMeasurements()
         //printf("process measurments\n");
         pair<double, map<int, vector<pair<int, Eigen::Matrix<double, 7, 1> > > > > feature;
         vector<pair<double, Eigen::Vector3d>> accVector, gyrVector;
-        if(!featureBuf.empty())
+        bool has_feature = false;
         {
-            feature = featureBuf.front();
+            std::lock_guard<std::mutex> lock(mBuf);
+            if (!featureBuf.empty())
+            {
+                feature = featureBuf.front();
+                has_feature = true;
+            }
+        }
+
+        if (has_feature)
+        {
+            const double diag_td_before = td;
             curTime = feature.first + td;
             while(1)
             {
@@ -292,8 +314,17 @@ void Estimator::processMeasurements()
                 }
             }
             mBuf.lock();
-            if(USE_IMU)
-                getIMUInterval(prevTime, curTime, accVector, gyrVector);
+            if (USE_IMU &&
+                (!getIMUInterval(prevTime, curTime, accVector, gyrVector)
+                 || accVector.empty()
+                 || accVector.size() != gyrVector.size()))
+            {
+                mBuf.unlock();
+                ROS_FATAL("[VIO_INTERVAL] Invalid IMU interval. "
+                          "Stopping ground diagnostic.");
+                ros::shutdown();
+                return;
+            }
 
             featureBuf.pop();
             mBuf.unlock();
@@ -311,11 +342,62 @@ void Estimator::processMeasurements()
                         dt = curTime - accVector[i - 1].first;
                     else
                         dt = accVector[i].first - accVector[i - 1].first;
+                    if (prevTime >= 0 &&
+                        (!std::isfinite(dt) || dt <= 0 || dt > 0.03))
+                    {
+                        ROS_WARN_STREAM("[VIO_IMU_DT] dt=" << dt
+                                        << " samples=" << accVector.size());
+                    }
                     processIMU(accVector[i].first, dt, accVector[i].second, gyrVector[i].second);
                 }
             }
             mProcess.lock();
             processImage(feature.second, feature.first);
+
+            int stereo_count = 0;
+            int bad_vertical = 0;
+            int bad_disparity = 0;
+
+            for (const auto &entry : feature.second)
+            {
+                if (entry.second.size() != 2)
+                    continue;
+
+                const auto &left = entry.second[0].second;
+                const auto &right = entry.second[1].second;
+
+                ++stereo_count;
+
+                if (std::abs(left(4) - right(4)) > 2.0)
+                    ++bad_vertical;
+
+                if (left(3) - right(3) <= 0.0)
+                    ++bad_disparity;
+            }
+
+            if (solver_flag == NON_LINEAR)
+            {
+                ROS_INFO_STREAM(
+                    "[VIO_FRAME] t="
+                    << std::fixed << std::setprecision(9)
+                    << feature.first
+                    << " td_before=" << diag_td_before
+                    << " td_after=" << td
+                    << " imu_n=" << accVector.size()
+                    << " features=" << feature.second.size()
+                    << " stereo=" << stereo_count
+                    << " bad_vertical=" << bad_vertical
+                    << " bad_disparity=" << bad_disparity
+                    << " tracked=" << f_manager.last_track_num
+                    << " long_track=" << f_manager.long_track_num
+                    << " ex_open=" << openExEstimation
+                    << " ba=" << Bas[frame_count].norm()
+                    << " bg=" << Bgs[frame_count].norm()
+                    << " p=" << Ps[frame_count].transpose()
+                    << " v=" << Vs[frame_count].transpose()
+                );
+            }
+
             prevTime = curTime;
 
             printStatistics(*this, 0);
@@ -1126,6 +1208,19 @@ void Estimator::optimization()
     TicToc t_solver;
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
+
+    ROS_INFO_STREAM(
+        "[VIO_SOLVER] t="
+        << std::fixed << std::setprecision(9)
+        << Headers[frame_count]
+        << " usable=" << summary.IsSolutionUsable()
+        << " termination=" << int(summary.termination_type)
+        << " initial_cost=" << summary.initial_cost
+        << " final_cost=" << summary.final_cost
+        << " iterations=" << summary.iterations.size()
+        << " visual_count=" << f_m_cnt
+        << " solve_ms=" << summary.total_time_in_seconds * 1000.0
+    );
     //cout << summary.BriefReport() << endl;
     ROS_DEBUG("Iterations : %d", static_cast<int>(summary.iterations.size()));
     //printf("solver costs: %f \n", t_solver.toc());
@@ -1571,6 +1666,15 @@ void Estimator::outliersRejection(set<int> &removeIndex)
 void Estimator::fastPredictIMU(double t, Eigen::Vector3d linear_acceleration, Eigen::Vector3d angular_velocity)
 {
     double dt = t - latest_time;
+
+    if (!std::isfinite(dt) || dt <= 0.0 || dt > 0.03)
+    {
+        ROS_WARN_STREAM_THROTTLE(
+            1.0, "[VIO_PROP_DT] dt=" << dt
+            << std::fixed << std::setprecision(9)
+            << " t=" << t << " latest=" << latest_time);
+    }
+
     latest_time = t;
     Eigen::Vector3d un_acc_0 = latest_Q * (latest_acc_0 - latest_Ba) - g;
     Eigen::Vector3d un_gyr = 0.5 * (latest_gyr_0 + angular_velocity) - latest_Bg;
@@ -1587,6 +1691,14 @@ void Estimator::updateLatestStates()
 {
     mPropagate.lock();
     latest_time = Headers[frame_count] + td;
+
+    if (std::abs(latest_time - curTime) > 0.001)
+    {
+        ROS_WARN_STREAM(
+            "[VIO_TIME_BASE] propagation_minus_integration="
+            << latest_time - curTime
+            << " td=" << td);
+    }
     latest_P = Ps[frame_count];
     latest_Q = Rs[frame_count];
     latest_V = Vs[frame_count];
