@@ -1,3 +1,4 @@
+#include <cstdlib>
 /*******************************************************
  * Copyright (C) 2019, Aerial Robotics Group, Hong Kong University of Science and Technology
  * 
@@ -179,7 +180,11 @@ void Estimator::inputImage(double t, const cv::Mat &_img, const cv::Mat &_img1)
     
     if(MULTIPLE_THREAD)  
     {     
-        if(inputImageCnt % 2 == 0)
+        static const int diagnostic_stride =
+            (std::getenv("VIO_DIAG_FULL_RATE") != nullptr)
+            ? 1 : 2;
+
+        if(inputImageCnt % diagnostic_stride == 0)
         {
             mBuf.lock();
             featureBuf.push(make_pair(t, featureFrame));

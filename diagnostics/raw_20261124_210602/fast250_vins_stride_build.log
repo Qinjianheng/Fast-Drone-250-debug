@@ -1,0 +1,22 @@
+[ 40%] Built target camera_models
+Scanning dependencies of target vins_lib
+[ 40%] Building CXX object realflight_modules/VINS-Fusion/vins_estimator/CMakeFiles/vins_lib.dir/src/estimator/estimator.cpp.o
+[ 40%] Linking CXX shared library /home/music-drone03/Fast-Drone-250/devel/lib/libvins_lib.so
+[ 80%] Built target vins_lib
+[ 80%] Linking CXX executable /home/music-drone03/Fast-Drone-250/devel/lib/vins/kitti_odom_test
+[ 80%] Linking CXX executable /home/music-drone03/Fast-Drone-250/devel/lib/vins/kitti_gps_test
+[ 80%] Built target kitti_gps_test
+[ 90%] Built target kitti_odom_test
+[ 90%] Linking CXX executable /home/music-drone03/Fast-Drone-250/devel/lib/vins/vins_node
+[100%] Built target vins_node
+Base path: /home/music-drone03/Fast-Drone-250
+Source space: /home/music-drone03/Fast-Drone-250/src
+Build space: /home/music-drone03/Fast-Drone-250/build
+Devel space: /home/music-drone03/Fast-Drone-250/devel
+Install space: /home/music-drone03/Fast-Drone-250/install
+####
+#### Running command: "make cmake_check_build_system" in "/home/music-drone03/Fast-Drone-250/build"
+####
+####
+#### Running command: "make -j2 -l2" in "/home/music-drone03/Fast-Drone-250/build/realflight_modules/VINS-Fusion/vins_estimator"
+####

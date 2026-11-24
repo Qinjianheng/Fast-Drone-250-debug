@@ -10,11 +10,22 @@ export ROS_MASTER_URI=http://localhost:11312
 
 MODE="${1:-A}"
 
+TD=0.0
+unset VIO_DIAG_FULL_RATE
+
 case "$MODE" in
     A) EST_TD=1 ;;
     B) EST_TD=0 ;;
-    *) echo "Usage: $0 A|B"; exit 1 ;;
+    C) EST_TD=0; TD=-0.019526609 ;;
+    D)
+        EST_TD=0
+        TD=-0.019526609
+        export VIO_DIAG_FULL_RATE=1
+        ;;
+    *) echo "Usage: $0 A|B|C|D"; exit 1 ;;
 esac
+
+RATE="${2:-1.0}"
 
 BAG=$(cat "$HOME/fast250_vins_diagnostics/current_raw_bag.txt")
 
@@ -47,7 +58,7 @@ sed -i -E \
     "$RUN/fast_drone_250.yaml"
 
 sed -i -E \
-    's/^td:.*/td: 0.0/' \
+    "s/^td:.*/td: $TD/" \
     "$RUN/fast_drone_250.yaml"
 
 sed -i \
@@ -103,7 +114,7 @@ rosnode list | grep -qx '/vins_fusion'
 
 sleep 2
 
-rosbag play -r 1.0 --delay=2 "$BAG" --topics \
+rosbag play -r "$RATE" --delay=2 "$BAG" --topics \
     /camera/infra1/image_rect_raw \
     /camera/infra2/image_rect_raw \
     /mavros/imu/data_raw \
