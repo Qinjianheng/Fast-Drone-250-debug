@@ -1,0 +1,68 @@
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-92-        MARGIN_SECOND_NEW = 1
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-93-    };
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-94-
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-95-    std::mutex mProcess;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-96-    std::mutex mBuf;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-97-    std::mutex mPropagate;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-98-    queue<pair<double, Eigen::Vector3d>> accBuf;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-99-    queue<pair<double, Eigen::Vector3d>> gyrBuf;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-100-    queue<pair<double, map<int, vector<pair<int, Eigen::Matrix<double, 7, 1> > > > > > featureBuf;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-101-    double prevTime, curTime;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h:102:    bool openExEstimation;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-103-
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-104-    std::thread trackThread;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-105-    std::thread processThread;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-106-
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-107-    FeatureTracker featureTracker;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-108-
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-109-    SolverFlag solver_flag;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-110-    MarginalizationFlag  marginalization_flag;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-111-    Vector3d g;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.h-112-
+--
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-31-    mProcess.lock();
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-32-    while(!accBuf.empty())
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-33-        accBuf.pop();
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-34-    while(!gyrBuf.empty())
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-35-        gyrBuf.pop();
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-36-    while(!featureBuf.empty())
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-37-        featureBuf.pop();
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-38-
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-39-    prevTime = -1;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-40-    curTime = 0;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp:41:    openExEstimation = 0;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-42-    initP = Eigen::Vector3d(0, 0, 0);
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-43-    initR = Eigen::Matrix3d::Identity();
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-44-    inputImageCnt = 0;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-45-    initFirstPoseFlag = false;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-46-
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-47-    for (int i = 0; i < WINDOW_SIZE + 1; i++)
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-48-    {
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-49-        Rs[i].setIdentity();
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-50-        Ps[i].setZero();
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-51-        Vs[i].setZero();
+--
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1019-        if(USE_IMU)
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1020-            problem.AddParameterBlock(para_SpeedBias[i], SIZE_SPEEDBIAS);
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1021-    }
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1022-    if(!USE_IMU)
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1023-        problem.SetParameterBlockConstant(para_Pose[0]);
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1024-
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1025-    for (int i = 0; i < NUM_OF_CAM; i++)
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1026-    {
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1027-        ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1028-        problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp:1029:        if ((ESTIMATE_EXTRINSIC && frame_count == WINDOW_SIZE && Vs[0].norm() > 0.2) || openExEstimation)
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1030-        {
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1031-            //ROS_INFO("estimate extinsic param");
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp:1032:            openExEstimation = 1;
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1033-        }
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1034-        else
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1035-        {
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1036-            //ROS_INFO("fix extinsic param");
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1037-            problem.SetParameterBlockConstant(para_Ex_Pose[i]);
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1038-        }
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1039-    }
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1040-    problem.AddParameterBlock(para_Td[0], 1);
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1041-
+src/realflight_modules/VINS-Fusion/vins_estimator/src/estimator/estimator.cpp-1042-    if (!ESTIMATE_TD || Vs[0].norm() < 0.2)

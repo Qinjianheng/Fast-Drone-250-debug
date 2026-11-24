@@ -1,0 +1,24 @@
+path:        /home/music-drone03/fast250_vins_diagnostics/hover_20261124_202839_13030/hover.bag
+version:     2.0
+duration:    2:18s (138s)
+start:       Nov 24 2026 20:28:48.89 (1795523328.89)
+end:         Nov 24 2026 20:31:07.01 (1795523467.01)
+size:        41.8 MB
+messages:    88883
+compression: none [55/55 chunks]
+types:       mavros_msgs/AttitudeTarget  [456f3af666b22ccd0222ea053a86b548]
+             mavros_msgs/RCIn            [1c3eafdb5efbcda3c334e1788bbcfe39]
+             mavros_msgs/State           [65cd0a9fff993b062b91e354554ec7e9]
+             nav_msgs/Odometry           [cd5e73d190d741a2f92e81eda573aca7]
+             quadrotor_msgs/Px4ctrlDebug [8adafd9362e5a8fc6c85e6f460fbfc53]
+             rosgraph_msgs/Log           [acffd30cd6b6de30f120938c17c593fb]
+             sensor_msgs/Imu             [6a62c6daae103f4ff57a132d6f95cec2]
+topics:      /debugPx4ctrl                    2021 msgs    : quadrotor_msgs/Px4ctrlDebug
+             /global_odom                    26898 msgs    : nav_msgs/Odometry          
+             /mavros/imu/data                27176 msgs    : sensor_msgs/Imu            
+             /mavros/imu/data_raw            27175 msgs    : sensor_msgs/Imu            
+             /mavros/rc/in                    1379 msgs    : mavros_msgs/RCIn           
+             /mavros/setpoint_raw/attitude    2021 msgs    : mavros_msgs/AttitudeTarget 
+             /mavros/state                     139 msgs    : mavros_msgs/State          
+             /rosout                            26 msgs    : rosgraph_msgs/Log           (4 connections)
+             /vins_fusion/odometry            2048 msgs    : nav_msgs/Odometry

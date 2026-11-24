@@ -1,0 +1,2 @@
+/home/music-drone03/Fast-Drone-250/src/realflight_modules/realsense-ros/realsense2_camera/launch/rs_camera.launch
+/home/music-drone03/Fast-Drone-250/src/realflight_modules/realsense-ros/realsense2_camera/launch/includes/nodelet.launch.xml

@@ -1,0 +1,57 @@
+[0m[ INFO] [1795523329.005660546]: init begins[0m
+config_file: /home/music-drone03/Fast-Drone-250/src/realflight_modules/VINS-Fusion/config/fast_drone_250.yaml
+USE_IMU: 1
+IMU_TOPIC: /mavros/imu/data_raw
+result path /home/music-drone03/vins_output/stamped_traj_estimate.txt
+[33m[ WARN] [1795523329.011562668]:  fix extrinsic param [0m
+camera number 2
+[0m[ INFO] [1795523329.012169304]: Unsynchronized sensors, online estimate time offset, initial td: -0[0m
+[0m[ INFO] [1795523329.012181182]: ROW: 480 COL: 640 [0m
+ exitrinsic cam 0
+-0.000915927    0.0190833     0.999817
+   -0.999989   0.00456042  -0.00100313
+ -0.00457873    -0.999807    0.0190789
+ 0.0673569 -0.0568081  0.0941843
+ exitrinsic cam 1
+-0.000885804    0.0193957     0.999811
+    -0.99999   0.00429267 -0.000969237
+ -0.00431066    -0.999803    0.0193917
+0.0674953 -0.106051  0.093836
+set g     0     0 9.805
+[33m[ WARN] [1795523329.012418081]: waiting for image and imu...[0m
+[0m[ INFO] [1795523329.012244512]: reading paramerter of camera /home/music-drone03/Fast-Drone-250/src/realflight_modules/VINS-Fusion/config/left.yaml[0m
+[0m[ INFO] [1795523329.012351612]: reading paramerter of camera /home/music-drone03/Fast-Drone-250/src/realflight_modules/VINS-Fusion/config/right.yaml[0m
+MULTIPLE_THREAD is 1
+init first imu pose
+averge acc -0.307324 -0.195796 9.800347
+init R0 
+    0.999509 -0.000625938    0.0313306
+           0       0.9998    0.0199745
+  -0.0313369   -0.0199647     0.999309
+[33m[ WARN] [1795523329.977795917]: gyroscope bias initial calibration  0.000121079   6.6464e-05 -1.16701e-05[0m
+terminate called without an active exception
+... logging to /home/music-drone03/.ros/log/94dcc82e-e802-11f1-9b62-01c73c00f5b2/roslaunch-musicdrone03-NUC11TNKi5-13467.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/music-drone03/Fast-Drone-250/src/realflight_modules/VINS-Fusion/vins_estimator/launch/fast_drone_250_purevio.launch
+[1mstarted roslaunch server http://musicdrone03-NUC11TNKi5:37371/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: noetic
+ * /rosversion: 1.16.0
+
+NODES
+  /
+    vins_fusion (vins/vins_node)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/music-drone03/Fast-Drone-250/src/realflight_modules/VINS-Fusion/vins_estimator/launch/fast_drone_250_purevio.launch http://localhost:11311
+[1mprocess[vins_fusion-1]: started with pid [13547][0m
+[vins_fusion-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

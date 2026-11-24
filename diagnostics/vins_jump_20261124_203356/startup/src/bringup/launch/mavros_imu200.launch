@@ -1,0 +1,11 @@
+<launch>
+    <!-- 启动 MAVROS -->
+    <include file="$(find mavros)/launch/px4.launch" />
+
+    <!-- MAVROS 连接飞控后，自动请求 IMU 200Hz -->
+    <node pkg="bringup"
+          type="set_imu200.sh"
+          name="set_imu200"
+          output="screen"
+          required="false" />
+</launch>

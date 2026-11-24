@@ -1,0 +1,121 @@
+[set_imu200] Waiting for MAVROS connection...
+[0m[ INFO] [1795523323.181171537]: FCU URL: /dev/ttyACM0:921600[0m
+[0m[ INFO] [1795523323.182338595]: serial0: device: /dev/ttyACM0 @ 921600 bps[0m
+[0m[ INFO] [1795523323.182640191]: GCS bridge disabled[0m
+[0m[ INFO] [1795523323.188167474]: Plugin 3dr_radio loaded[0m
+[0m[ INFO] [1795523323.188858211]: Plugin 3dr_radio initialized[0m
+[0m[ INFO] [1795523323.188883153]: Plugin actuator_control loaded[0m
+[0m[ INFO] [1795523323.190007032]: Plugin actuator_control initialized[0m
+[0m[ INFO] [1795523323.190028085]: Plugin altitude loaded[0m
+[0m[ INFO] [1795523323.190365493]: Plugin altitude initialized[0m
+[0m[ INFO] [1795523323.190384752]: Plugin command loaded[0m
+[0m[ INFO] [1795523323.193743860]: Plugin command initialized[0m
+[0m[ INFO] [1795523323.193799548]: Plugin ftp loaded[0m
+[0m[ INFO] [1795523323.196080576]: Plugin ftp initialized[0m
+[0m[ INFO] [1795523323.196107633]: Plugin geofence loaded[0m
+[0m[ INFO] [1795523323.197268066]: Plugin geofence initialized[0m
+[0m[ INFO] [1795523323.197297834]: Plugin global_position loaded[0m
+[0m[ INFO] [1795523323.203075627]: Plugin global_position initialized[0m
+[0m[ INFO] [1795523323.203105799]: Plugin hil loaded[0m
+[0m[ INFO] [1795523323.207695040]: Plugin hil initialized[0m
+[0m[ INFO] [1795523323.207752696]: Plugin home_position loaded[0m
+[0m[ INFO] [1795523323.209012819]: Plugin home_position initialized[0m
+[0m[ INFO] [1795523323.209057720]: Plugin imu loaded[0m
+[0m[ INFO] [1795523323.212282861]: Plugin imu initialized[0m
+[0m[ INFO] [1795523323.212331088]: Plugin local_position loaded[0m
+[0m[ INFO] [1795523323.214915380]: Plugin local_position initialized[0m
+[0m[ INFO] [1795523323.214955348]: Plugin manual_control loaded[0m
+[0m[ INFO] [1795523323.216068227]: Plugin manual_control initialized[0m
+[0m[ INFO] [1795523323.216096743]: Plugin nav_controller_output loaded[0m
+[0m[ INFO] [1795523323.216315881]: Plugin nav_controller_output initialized[0m
+[0m[ INFO] [1795523323.216339498]: Plugin param loaded[0m
+[0m[ INFO] [1795523323.217307662]: Plugin param initialized[0m
+[0m[ INFO] [1795523323.217331244]: Plugin rallypoint loaded[0m
+[0m[ INFO] [1795523323.218365787]: Plugin rallypoint initialized[0m
+[0m[ INFO] [1795523323.218393872]: Plugin rc_io loaded[0m
+[0m[ INFO] [1795523323.219648273]: Plugin rc_io initialized[0m
+[0m[ INFO] [1795523323.219659809]: Plugin safety_area blacklisted[0m
+[0m[ INFO] [1795523323.219688242]: Plugin setpoint_accel loaded[0m
+[0m[ INFO] [1795523323.221902206]: Plugin setpoint_accel initialized[0m
+[0m[ INFO] [1795523323.221966229]: Plugin setpoint_attitude loaded[0m
+[0m[ INFO] [1795523323.226009793]: Plugin setpoint_attitude initialized[0m
+[0m[ INFO] [1795523323.226046016]: Plugin setpoint_position loaded[0m
+[0m[ INFO] [1795523323.231945746]: Plugin setpoint_position initialized[0m
+[0m[ INFO] [1795523323.232013509]: Plugin setpoint_raw loaded[0m
+[0m[ INFO] [1795523323.236019673]: Plugin setpoint_raw initialized[0m
+[0m[ INFO] [1795523323.236063631]: Plugin setpoint_trajectory loaded[0m
+[0m[ INFO] [1795523323.237762807]: Plugin setpoint_trajectory initialized[0m
+[0m[ INFO] [1795523323.237804817]: Plugin setpoint_velocity loaded[0m
+[0m[ INFO] [1795523323.239789947]: Plugin setpoint_velocity initialized[0m
+[0m[ INFO] [1795523323.239848185]: Plugin sys_status loaded[0m
+[0m[ INFO] [1795523323.243614084]: Plugin sys_status initialized[0m
+[0m[ INFO] [1795523323.243668689]: Plugin sys_time loaded[0m
+[0m[ INFO] [1795523323.245451339]: TM: Timesync mode: MAVLINK[0m
+[0m[ INFO] [1795523323.245595711]: TM: Not publishing sim time[0m
+[0m[ INFO] [1795523323.246017144]: Plugin sys_time initialized[0m
+[0m[ INFO] [1795523323.246072154]: Plugin vfr_hud loaded[0m
+[0m[ INFO] [1795523323.246301783]: Plugin vfr_hud initialized[0m
+[0m[ INFO] [1795523323.246341697]: Plugin waypoint loaded[0m
+[0m[ INFO] [1795523323.248098022]: Plugin waypoint initialized[0m
+[0m[ INFO] [1795523323.248137716]: Plugin wind_estimation loaded[0m
+[0m[ INFO] [1795523323.248371994]: Plugin wind_esti[33m[ WARN] [1795523325.166692569]: CMD: Unexpected command 520, result 0[0m
+[set_imu200] MAVROS connected
+[set_imu200] Message 31: 200 Hz requested
+[set_imu200] Message 105: 200 Hz requested
+[set_imu200] Both requests accepted
+mation initialized[0m
+[0m[ INFO] [1795523323.248450562]: Built-in SIMD instructions: SSE, SSE2[0m
+[0m[ INFO] [1795523323.248462808]: Built-in MAVLink package version: 2022.12.30[0m
+[0m[ INFO] [1795523323.248475702]: Known MAVLink dialects: common ardupilotmega ASLUAV AVSSUAS all cubepilot development icarous matrixpilot paparazzi standard storm32 uAvionix ualberta[0m
+[0m[ INFO] [1795523323.248486608]: MAVROS started. MY ID 1.240, TARGET ID 1.1[0m
+[0m[ INFO] [1795523323.248574349]: IMU: Attitude quaternion IMU detected![0m
+[0m[ INFO] [1795523323.248616906]: IMU: High resolution IMU detected![0m
+[0m[ INFO] [1795523323.248875859]: RC_CHANNELS message detected![0m
+[0m[ INFO] [1795523324.161976062]: CON: Got HEARTBEAT, connected. FCU: PX4 Autopilot[0m
+[0m[ INFO] [1795523324.168165687]: IMU: Attitude quaternion IMU detected![0m
+[0m[ INFO] [1795523324.168269277]: IMU: High resolution IMU detected![0m
+[0m[ INFO] [1795523324.207824794]: RC_CHANNELS message detected![0m
+[0m[ INFO] [1795523325.165190372]: GF: Using MISSION_ITEM_INT[0m
+[0m[ INFO] [1795523325.165217136]: RP: Using MISSION_ITEM_INT[0m
+[0m[ INFO] [1795523325.165226079]: WP: Using MISSION_ITEM_INT[0m
+[0m[ INFO] [1795523325.165237665]: VER: 1.1: Capabilities         0x000000000000e4ef[0m
+[0m[ INFO] [1795523325.165250588]: VER: 1.1: Flight software:     010b00ff (71db0903a9000000)[0m
+[0m[ INFO] [1795523325.165268088]: VER: 1.1: Middleware software: 010b00ff (71db0903a9000000)[0m
+[0m[ INFO] [1795523325.165284744]: VER: 1.1: OS software:         080200ff (ec20f2e6c5cc35b2)[0m
+[0m[ INFO] [1795523325.165301059]: VER: 1.1: Board hardware:      00000032[0m
+[0m[ INFO] [1795523325.165320150]: VER: 1.1: VID/PID:             26ac:0032[0m
+[0m[ INFO] [1795523325.165336270]: VER: 1.1: UID:                 3039511932343338[0m
+[0m[ INFO] [1795523334.162599886]: HP: requesting home position[0m
+[0m[ INFO] [1795523339.162549646]: GF: mission received[0m
+[0m[ INFO] [1795523339.162878687]: RP: mission received[0m
+[0m[ INFO] [1795523339.163212582]: WP: mission received[0m
+[0m[ INFO] [1795523344.162549806]: HP: requesting home position[0m
+[0m[ INFO] [1795523354.162539911]: HP: requesting home position[0m
+[0m[ INFO] [1795523364.162583238]: HP: requesting home position[0m
+[0m[ INFO] [1795523374.162553733]: HP: requesting home position[0m
+[0m[ INFO] [1795523384.162550542]: HP: requesting home position[0m
+[0m[ INFO] [1795523394.162544016]: HP: requesting home position[0m
+[0m[ INFO] [1795523404.162654125]: HP: requesting home position[0m
+[0m[ INFO] [1795523414.162586741]: HP: requesting home position[0m
+[0m[ INFO] [1795523424.162548635]: HP: requesting home position[0m
+[0m[ INFO] [1795523434.162542043]: HP: requesting home position[0m
+[0m[ INFO] [1795523444.162539386]: HP: requesting home position[0m
+[0m[ INFO] [1795523454.162585328]: HP: requesting home position[0m
+[0m[ INFO] [1795523464.162580538]: HP: requesting home position[0m
+[0m[ INFO] [1795523474.162542204]: HP: requesting home position[0m
+[0m[ INFO] [1795523484.162734112]: HP: requesting home position[0m
+[0m[ INFO] [1795523494.162623393]: HP: requesting home position[0m
+[0m[ INFO] [1795523504.162775422]: HP: requesting home position[0m
+[0m[ INFO] [1795523514.162750933]: HP: requesting home position[0m
+[0m[ INFO] [1795523524.162728847]: HP: requesting home position[0m
+[0m[ INFO] [1795523534.162709075]: HP: requesting home position[0m
+[0m[ INFO] [1795523544.162711484]: HP: requesting home position[0m
+[0m[ INFO] [1795523554.162725198]: HP: requesting home position[0m
+[0m[ INFO] [1795523564.162739013]: HP: requesting home position[0m
+[0m[ INFO] [1795523574.162567428]: HP: requesting home position[0m
+[0m[ INFO] [1795523584.162701134]: HP: requesting home position[0m
+[0m[ INFO] [1795523594.162684905]: HP: requesting home position[0m
+[0m[ INFO] [1795523604.162688279]: HP: requesting home position[0m
+[0m[ INFO] [1795523614.162709174]: HP: requesting home position[0m
+[0m[ INFO] [1795523624.162720023]: HP: requesting home position[0m
+[0m[ IN

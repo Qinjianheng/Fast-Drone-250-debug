@@ -1,0 +1,38 @@
+src/realflight_modules/px4ctrl/src/input.cpp-161-    const double q_norm = next_q.norm();
+src/realflight_modules/px4ctrl/src/input.cpp-162-    const char *fault = nullptr;
+src/realflight_modules/px4ctrl/src/input.cpp-163-    if (stamp.isZero() || !std::isfinite(age) || age > 0.5 || age < -0.05)
+src/realflight_modules/px4ctrl/src/input.cpp-164-        fault = "bad timestamp";
+src/realflight_modules/px4ctrl/src/input.cpp-165-    else if (!next_p.allFinite() || !next_v.allFinite() || !next_w.allFinite()
+src/realflight_modules/px4ctrl/src/input.cpp-166-             || !next_q.coeffs().allFinite() || std::abs(q_norm - 1.0) > 0.2)
+src/realflight_modules/px4ctrl/src/input.cpp-167-        fault = "NaN/Inf or invalid quaternion";
+src/realflight_modules/px4ctrl/src/input.cpp-168-    else if (next_v.norm() > 15.0 || next_p.norm() > 100.0)
+src/realflight_modules/px4ctrl/src/input.cpp-169-        fault = "impossible speed or local position";
+src/realflight_modules/px4ctrl/src/input.cpp-170-    else if (has_previous)
+src/realflight_modules/px4ctrl/src/input.cpp-171-    {
+src/realflight_modules/px4ctrl/src/input.cpp-172-        const double dt = (stamp - previous_stamp).toSec();
+src/realflight_modules/px4ctrl/src/input.cpp-173-        if (dt <= 0.0)
+src/realflight_modules/px4ctrl/src/input.cpp-174-            fault = "non-increasing timestamp";
+src/realflight_modules/px4ctrl/src/input.cpp-175-        else if ((next_p - previous_p).norm() > 0.20 + 15.0 * dt)
+src/realflight_modules/px4ctrl/src/input.cpp:176:            fault = "position jump";
+src/realflight_modules/px4ctrl/src/input.cpp-177-        else if (previous_q.angularDistance(next_q) > 0.52 + 8.0 * dt)
+src/realflight_modules/px4ctrl/src/input.cpp-178-            fault = "orientation jump";
+src/realflight_modules/px4ctrl/src/input.cpp-179-    }
+src/realflight_modules/px4ctrl/src/input.cpp-180-
+src/realflight_modules/px4ctrl/src/input.cpp-181-    if (fault)
+src/realflight_modules/px4ctrl/src/input.cpp-182-    {
+src/realflight_modules/px4ctrl/src/input.cpp:183:        ROS_ERROR("[px4ctrl] ODOM FAULT LATCHED: %s; autonomous control disabled", fault);
+src/realflight_modules/px4ctrl/src/input.cpp-184-        fault_latched = true;
+src/realflight_modules/px4ctrl/src/input.cpp-185-        consecutive_good = 0;
+src/realflight_modules/px4ctrl/src/input.cpp-186-        return;
+src/realflight_modules/px4ctrl/src/input.cpp-187-    }
+src/realflight_modules/px4ctrl/src/input.cpp-188-
+src/realflight_modules/px4ctrl/src/input.cpp-189-    msg = *pMsg;
+src/realflight_modules/px4ctrl/src/input.cpp-190-    rcv_stamp = now;
+src/realflight_modules/px4ctrl/src/input.cpp-191-    recv_new_msg = true;
+src/realflight_modules/px4ctrl/src/input.cpp-192-uav_utils::extract_odometry(pMsg, p, v, q, w);
+src/realflight_modules/px4ctrl/src/input.cpp-193-#ifdef VEL_IN_BODY
+src/realflight_modules/px4ctrl/src/input.cpp-194-    // Keep the existing body-frame velocity option.
+src/realflight_modules/px4ctrl/src/input.cpp-195-    v = q.toRotationMatrix() * v;
+src/realflight_modules/px4ctrl/src/input.cpp-196-#endif
+src/realflight_modules/px4ctrl/src/input.cpp-197-    previous_stamp = stamp;
+src/realflight_modules/px4ctrl/src/input.cpp-198-    previous_p = next_p;
