@@ -1,0 +1,31 @@
+[0m[ INFO] [1795524582.908339851]: init begins[0m
+config_file: /home/music-drone03/fast250_calibration/dynamic_20261124_204941/fast_drone_250.yaml
+USE_IMU: 1
+IMU_TOPIC: /mavros/imu/data_raw
+result path /home/music-drone03/fast250_calibration/dynamic_20261124_204941/output/stamped_traj_estimate.txt
+[33m[ WARN] [1795524582.914092985]:  Optimize extrinsic param around initial guess![0m
+camera number 2
+[0m[ INFO] [1795524582.914624479]: Unsynchronized sensors, online estimate time offset, initial td: -0[0m
+[0m[ INFO] [1795524582.914634080]: ROW: 480 COL: 640 [0m
+ exitrinsic cam 0
+-0.000915927    0.0190833     0.999817
+   -0.999989   0.00456042  -0.00100313
+ -0.00457873    -0.999807    0.0190789
+ 0.0673569 -0.0568081  0.0941843
+ exitrinsic cam 1
+-0.000885804    0.0193957     0.999811
+    -0.99999   0.00429267 -0.000969237
+ -0.00431066    -0.999803    0.0193917
+0.0674953 -0.106051  0.093836
+set g     0     0 9.805
+[33m[ WARN] [1795524582.914866472]: waiting for image and imu...[0m
+[0m[ INFO] [1795524582.914694311]: reading paramerter of camera /home/music-drone03/fast250_calibration/dynamic_20261124_204941/left.yaml[0m
+[0m[ INFO] [1795524582.914797553]: reading paramerter of camera /home/music-drone03/fast250_calibration/dynamic_20261124_204941/right.yaml[0m
+MULTIPLE_THREAD is 1
+init first imu pose
+averge acc -0.289528 -0.201330 9.802734
+init R0 
+    0.999564 -0.000606081    0.0295101
+           0     0.999789    0.0205338
+  -0.0295163   -0.0205248     0.999354
+[33m[ WARN] [1795524583.906613363]: gyroscope bias initial calibration -5.33847e-05  7.24854e-05  0.000168539[0m
