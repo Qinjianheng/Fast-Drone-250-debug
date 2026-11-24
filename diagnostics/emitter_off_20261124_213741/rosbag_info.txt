@@ -1,0 +1,21 @@
+path:         /home/music-drone03/fast250_vins_diagnostics/emitter_off_20261124_213741/raw.bag
+version:      2.0
+duration:     52.3s
+start:        Nov 24 2026 21:37:42.94 (1795527462.94)
+end:          Nov 24 2026 21:38:35.27 (1795527515.27)
+size:         739.9 MB
+messages:     27007
+compression:  lz4 [1047/1047 chunks; 79.61%]
+uncompressed: 928.2 MB @ 17.7 MB/s
+compressed:   739.0 MB @ 14.1 MB/s (79.61%)
+types:        mavros_msgs/State      [65cd0a9fff993b062b91e354554ec7e9]
+              sensor_msgs/CameraInfo [c9a58c1b0b154e0e6da7578cb991d214]
+              sensor_msgs/Image      [060021388200f6f0f447d0fcd9c64743]
+              sensor_msgs/Imu        [6a62c6daae103f4ff57a132d6f95cec2]
+topics:       /camera/infra1/camera_info       1569 msgs    : sensor_msgs/CameraInfo
+              /camera/infra1/image_rect_raw    1569 msgs    : sensor_msgs/Image     
+              /camera/infra2/camera_info       1569 msgs    : sensor_msgs/CameraInfo
+              /camera/infra2/image_rect_raw    1569 msgs    : sensor_msgs/Image     
+              /mavros/imu/data                10339 msgs    : sensor_msgs/Imu       
+              /mavros/imu/data_raw            10338 msgs    : sensor_msgs/Imu       
+              /mavros/state                      54 msgs    : mavros_msgs/State
