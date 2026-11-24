@@ -1,0 +1,50 @@
+===== SENSOR TIMESTAMPS =====
+
+Topic: /mavros/imu/data_raw
+Messages: 13850
+Duration: 70.07088828086853
+Median dt (ms): 5.006074905395508
+Max dt (ms): 12.561798095703125
+Non-increasing stamps: 0
+Receipt-header median (ms): 4.677295684814453
+Receipt-header p95 (ms): 5.83651065826416
+Messages near fault: 395
+Max dt near fault (ms): 12.516975402832031
+
+Topic: /camera/infra1/image_rect_raw
+Messages: 2101
+Duration: 70.04109621047974
+Median dt (ms): 33.34522247314453
+Max dt (ms): 33.701419830322266
+Non-increasing stamps: 0
+Receipt-header median (ms): 9.026050567626953
+Receipt-header p95 (ms): 10.278701782226562
+Messages near fault: 60
+Max dt near fault (ms): 33.495187759399414
+
+Topic: /camera/infra2/image_rect_raw
+Messages: 2101
+Duration: 70.04109621047974
+Median dt (ms): 33.34522247314453
+Max dt (ms): 33.701419830322266
+Non-increasing stamps: 0
+Receipt-header median (ms): 9.055376052856445
+Receipt-header p95 (ms): 10.351181030273438
+Messages near fault: 60
+Max dt near fault (ms): 33.495187759399414
+
+===== STEREO TIMESTAMP MATCHING =====
+Median difference (ms): 0.0
+P95 difference (ms): 0.0
+Max difference (ms): 0.0
+Above 3ms: 0
+
+===== RAW IMU AROUND FAULT =====
+offset= -3 samples= 197 acc_mean= 9.784953173229686 acc_max= 13.520780875362657 gyro_mean= 1.6366007082977303 gyro_max= 2.8076556992724
+offset= -2 samples= 197 acc_mean= 10.471196094685972 acc_max= 17.001014614516606 gyro_mean= 0.5001232051839604 gyro_max= 2.2451303537811866
+offset= -1 samples= 199 acc_mean= 9.806121924004572 acc_max= 9.962850563498405 gyro_mean= 0.007440161296072822 gyro_max= 0.06614170043441558
+offset= 0 samples= 196 acc_mean= 9.803637659372976 acc_max= 9.859385948877643 gyro_mean= 0.0019572827091316786 gyro_max= 0.00456739064744722
+offset= 1 samples= 198 acc_mean= 9.800643749184616 acc_max= 9.849193799625668 gyro_mean= 0.002154851468860284 gyro_max= 0.004951133983036678
+offset= 2 samples= 198 acc_mean= 9.800561476828362 acc_max= 9.854531575823334 gyro_mean= 0.002253409335614025 gyro_max= 0.004346126232278292
+
+===== FINISHED =====
